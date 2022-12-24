@@ -1,0 +1,91 @@
+# Import the pygame module
+import pygame
+import random
+# Import pygame.locals for easier access to key coordinates
+# Updated to conform to flake8 and black standards
+from pygame.locals import (
+    RLEACCEL,
+    K_DOWN,
+    K_UP,
+    K_LEFT,
+    K_RIGHT,
+    K_ESCAPE,
+    KEYDOWN,
+    QUIT,
+)
+
+# Initialize pygame
+pygame.init()
+# Define constants for the screen width and height
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+
+#Background Perimeters
+bg_im = pygame.image.load("bg.png")
+
+bg_size = (800, 600)
+
+bg = pygame.transform.scale(bg_im, bg_size)
+
+# Create the screen object
+# The size is determined by the constant SCREEN_WIDTH and SCREEN_HEIGHT
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+# Instantiate player. Right now, this is just a rectangle.
+player = Player()
+
+add_enemy = pygame.USEREVENT + 1
+pygame.time.set_timer(add_enemy, 500)
+
+enemies = pygame.sprite.Group()
+a_sprites = pygame.sprite.Group()
+a_sprites.add(player)
+# Variable to keep the main loop running
+running = True
+
+# Main loop
+while running:
+    # for loop through the event queue
+    for event in pygame.event.get():
+        # Check for KEYDOWN event
+        if event.type == KEYDOWN:
+            # If the Esc key is pressed, then exit the main loop
+            if event.key == K_ESCAPE:
+                running = False
+        # Check for QUIT event. If QUIT, then set running to false.
+        elif event.type == QUIT:
+            running = False
+
+        elif event.type == add_enemy:
+            new_enemy = Enemy()
+            enemies.add(new_enemy)
+            a_sprites.add(new_enemy)
+
+# Get the set of keys pressed and check for user input
+    pressed_keys = pygame.key.get_pressed()
+
+    # Update the #player sprite based on user keypresses
+    player.update(pressed_keys)
+
+    # Fill the screen with black
+    screen.fill((0, 0, 0))
+
+    #add the background
+    screen.blit(bg, (0, 0))
+
+    # Draw the player on the screen
+    screen.blit(player.surf, (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
+
+    enemies.update()
+
+    for entity in a_sprites:
+        screen.blit(entity.surf, entity.rect)
+
+# Check if any enemies have collided with the player
+    if pygame.sprite.spritecollideany(player, enemies):
+        # If so, then remove the player and stop the loop
+        player.kill()
+        running = False
+
+    # Update the display
+    pygame.display.flip()
