@@ -1,0 +1,12 @@
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Enemy, self).__init__()
+        self.surf = pygame.image.load('enemy.png').convert()
+        self.surf.set_colorkey((255, 255, 255), RLEACCEL)
+        self.rect = self.surf.get_rect(
+            center=
+            (  #makes the enemy objects spawn randomly along the right wall
+                random.randint(SCREEN_WIDTH + 20, SCREEN_WIDTH + 100),
+                random.randint(0, SCREEN_HEIGHT),
+            ))
+        self.speed = random.randint(5, 20)
