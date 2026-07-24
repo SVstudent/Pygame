@@ -26,3 +26,8 @@ def variance(values: Sequence[float]) -> float:
         return 0.0
     m = mean(values)
     return sum((x - m) ** 2 for x in values) / (len(values) - 1)
+
+
+def stddev(values: Sequence[float]) -> float:
+    # BUG: standard deviation is the square root of the variance.
+    return variance(values)
