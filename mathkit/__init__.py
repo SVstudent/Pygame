@@ -1,3 +1,3 @@
-from .stats import mean, median, variance
+from .stats import mean, median, variance, stddev
 
-__all__ = ["mean", "median", "variance"]
+__all__ = ["mean", "median", "variance", "stddev"]
