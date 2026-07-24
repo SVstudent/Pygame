@@ -1,6 +1,7 @@
 """Small statistics helpers used to exercise the Aegis trust workflow."""
 from __future__ import annotations
 
+import math
 from typing import Sequence
 
 
@@ -26,3 +27,8 @@ def variance(values: Sequence[float]) -> float:
         return 0.0
     m = mean(values)
     return sum((x - m) ** 2 for x in values) / (len(values) - 1)
+
+
+def stddev(values: Sequence[float]) -> float:
+    # BUG: standard deviation is the square root of the variance.
+    return math.sqrt(variance(values))
